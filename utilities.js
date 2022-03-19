@@ -76,3 +76,22 @@ exports.vttToPlainText = (textInput) => {
   lines = lines.filter((line, index, lines) => line !== lines[index + 1]);
   return lines.join(" ");
 };
+
+exports.stringToSlug = function (str) {
+  // remove accents
+  var from =
+      "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+    to =
+      "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+  for (var i = 0, l = from.length; i < l; i++) {
+    str = str.replace(RegExp(from[i], "gi"), to[i]);
+  }
+
+  str = str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\-]/g, "-")
+    .replace(/-+/g, "-");
+
+  return str;
+};
