@@ -55,3 +55,24 @@ exports.cleanTextToCompare = function (textInput) {
   result = result.replace(newline, " ");
   return result;
 };
+
+exports.vttToPlainText = (textInput) => {
+  if (textInput.length === 0) {
+    return;
+  }
+
+  textInput = textInput.replace(/WEBVTT/g, "");
+  textInput = textInput.replace(/.+ --> .+/g, "");
+  textInput = textInput.replace(/<\/c>/g, "");
+  textInput = textInput.replace(/<.+?>/g, "");
+  textInput = textInput.replace(/^\s*$/g, "");
+  textInput = textInput.replace(/&nbsp;/g, " ");
+  textInput = textInput.replace(/-/g, " ");
+  let lines = textInput.split("\n");
+
+  lines.splice(0, 2);
+  lines = lines.map((line) => line.trim());
+  lines = lines.filter((line) => line.length > 0);
+  lines = lines.filter((line, index, lines) => line !== lines[index + 1]);
+  return lines.join(" ");
+};
