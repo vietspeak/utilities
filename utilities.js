@@ -8,23 +8,34 @@ exports.getCurrentTask = function (currentTime) {
     1662829200, 1663693200, 1664557200, 1665421200, 1666285200, 1667235600,
     1668099600, 1668963600, 1669827600, 1670691600, 1671555600, 1672506000,
     1673370000, 1674234000, 1675184400, 1676048400, 1676912400, 1677603600,
+    1678467600, 1679331600, 1680282000, 1681146000, 1682010000, 1682874000,
   ];
 
   let getCurrentTask = list_task.filter((e) => e > currentTime);
+
   getCurrentTask = getCurrentTask[0];
+
   let starting_task = 68;
+
   getCurrentTask = list_task.indexOf(getCurrentTask) + starting_task;
 
   let latestTask = list_task.length + starting_task;
 
-  const myDate = new Date(currentTime * 1000);
-  console.log("Current Time: " + myDate.toLocaleString());
+  const myDate = (timeStampt) => {
+    return new Date(timeStampt * 1000).toLocaleString("en-US", {
+      timeZone: "Asia/Ho_Chi_Minh",
+    });
+  };
 
   console.log(
-    "Latest time setup tak: " +
+    "Current task: " + getCurrentTask + " - time: " + myDate(currentTime)
+  );
+
+  console.log(
+    "Latest time setup task: " +
       latestTask +
       " on " +
-      new Date(list_task[list_task.length - 1] * 1000).toLocaleString()
+      myDate(list_task[list_task.length - 1])
   );
   return getCurrentTask;
 };
