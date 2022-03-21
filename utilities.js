@@ -1,4 +1,4 @@
-exports.currentTimeStamp = Math.floor(new Date().getTime() / 1000.0);
+exports.currentTimeStamp = () => Math.floor(new Date().getTime() / 1000.0);
 
 exports.getCurrentTask = function (currentTime) {
   let list_task = [
@@ -9,6 +9,7 @@ exports.getCurrentTask = function (currentTime) {
     1668099600, 1668963600, 1669827600, 1670691600, 1671555600, 1672506000,
     1673370000, 1674234000, 1675184400, 1676048400, 1676912400, 1677603600,
     1678467600, 1679331600, 1680282000, 1681146000, 1682010000, 1682874000,
+    1683738000, 1684602000, 1685552400, 1686416400, 1687280400,
   ];
 
   let getCurrentTask = list_task.filter((e) => e > currentTime);
@@ -94,4 +95,10 @@ exports.stringToSlug = function (str) {
     .replace(/-+/g, "-");
 
   return str;
+};
+
+exports.later = function (delay) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, delay);
+  });
 };
