@@ -119,7 +119,7 @@ exports.onlyHandleChannelbanthongtin = function (channel){
 
 exports.onlyHandleChannel2 = function (channel){
     if(typeof channel === "undefined") return;
-    if(channel != "C01BY57F29H") return;
+    if(channel != "C01BY57F29H") return true;
 }
 
 exports.onlyHandleMainThreadEvent = function (thread_ts){
