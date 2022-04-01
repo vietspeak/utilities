@@ -1,22 +1,33 @@
 exports.currentTimeStamp = () => Math.floor(new Date().getTime() / 1000.0);
 
 let list_task = [
-    1646931600, 1647795600, 1648746000, 1649610000, 1650474000, 1651338000,
-    1652202000, 1653066000, 1654016400, 1654880400, 1655744400, 1656608400,
-    1657472400, 1658336400, 1659286800, 1660150800, 1661014800, 1661965200,
-    1662829200, 1663693200, 1664557200, 1665421200, 1666285200, 1667235600,
-    1668099600, 1668963600, 1669827600, 1670691600, 1671555600, 1672506000,
-    1673370000, 1674234000, 1675184400, 1676048400, 1676912400, 1677603600,
-    1678467600, 1679331600, 1680282000, 1681146000, 1682010000, 1682874000,
-    1683738000, 1684602000, 1685552400, 1686416400, 1687280400, 1688144400
+  1646931600, 1647795600, 1648746000, 1649610000, 1650474000, 1651338000,
+  1652202000, 1653066000, 1654016400, 1654880400, 1655744400, 1656608400,
+  1657472400, 1658336400, 1659286800, 1660150800, 1661014800, 1661965200,
+  1662829200, 1663693200, 1664557200, 1665421200, 1666285200, 1667235600,
+  1668099600, 1668963600, 1669827600, 1670691600, 1671555600, 1672506000,
+  1673370000, 1674234000, 1675184400, 1676048400, 1676912400, 1677603600,
+  1678467600, 1679331600, 1680282000, 1681146000, 1682010000, 1682874000,
+  1683738000, 1684602000, 1685552400, 1686416400, 1687280400, 1688144400
 ];
-  
+
+exports.getBeginningAndEndingTask = function (currentTime) {
+  let getTime = list_task.filter((e) => e > currentTime);
+  let ending = getTime[0];
+  let beginning = list_task.indexOf(ending) - 1;
+  beginning = list_task[beginning];
+  return {
+    beginning,
+    ending,
+    totalDay: (ending - beginning) / 86400
+  }
+
+};
+
+
 exports.getCurrentTask = function (currentTime) {
-
   let getCurrentTask = list_task.filter((e) => e > currentTime);
-
   getCurrentTask = getCurrentTask[0];
-
   let starting_task = 68;
 
   getCurrentTask = list_task.indexOf(getCurrentTask) + starting_task;
@@ -35,12 +46,13 @@ exports.getCurrentTask = function (currentTime) {
 
   console.log(
     "Latest time setup task: " +
-      latestTask +
-      " on " +
-      myDate(list_task[list_task.length - 1])
+    latestTask +
+    " on " +
+    myDate(list_task[list_task.length - 1])
   );
   return getCurrentTask;
 };
+
 
 exports.cleanTextToCompare = function (textInput) {
   let result = textInput.trim().toLowerCase();
@@ -82,9 +94,9 @@ exports.vttToPlainText = (textInput) => {
 exports.stringToSlug = function (str) {
   // remove accents
   var from =
-      "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+    "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
     to =
-      "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+    "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
   for (var i = 0, l = from.length; i < l; i++) {
     str = str.replace(RegExp(from[i], "gi"), to[i]);
   }
@@ -104,49 +116,62 @@ exports.later = function (delay) {
   });
 };
 
-    
-exports.development = function(user, event){
-    console.log(event)
-    // only handle the user William Shakehand
-   if(user != "U01C3SA99FW") return true;
-   
+exports.development = function (user, event) {
+  console.log(event)
+  // only handle the user William Shakehand
+  if (user != "U01C3SA99FW") return true;
+
 }
 
-exports.onlyHandleChannelbanthongtin = function (channel){
-    if(typeof channel === "undefined") return;
-    if(channel != "G01BPHWQ023") return true;
+exports.onlyHandleChannelbanthongtin = function (channel) {
+  if (typeof channel === "undefined") return;
+  if (channel != "G01BPHWQ023") return true;
 }
 
 
-exports.onlyHandleChannel2 = function (channel){
-    if(typeof channel === "undefined") return;
-    if(channel != "C01BY57F29H") return true;
+exports.onlyHandleChannel2 = function (channel) {
+  if (typeof channel === "undefined") return;
+  if (channel != "C01BY57F29H") return true;
 }
 
-exports.onlyHandleMainThreadEvent = function (thread_ts){
- 
- if (typeof thread_ts === "string") return true;
-  
+exports.onlyHandleMainThreadEvent = function (thread_ts) {
+
+  if (typeof thread_ts === "string") return true;
+
 }
 
-exports.onlyHandlePublicEvent = function (channel_type){
-  if(typeof channel_type === "undefined") return;
-     // DO NOT HANDLE IF SEND THROUGH IM
+exports.onlyHandlePublicEvent = function (channel_type) {
+  if (typeof channel_type === "undefined") return;
+  // DO NOT HANDLE IF SEND THROUGH IM
   if (channel_type === "im") return true;
-  
+
 }
 
-exports.onlyHandleIfNotDeletingEvent = function (subtype){
-    if(typeof subtype === "undefined") return false;
-    if (subtype === "message_deleted") return true;
-    
+exports.onlyHandleIfIM = function (channel_type) {
+  if (typeof channel_type === "im") return;
+  if (channel_type !== "im") return true;
+
 }
 
-exports.onlyHandleIfNotBot = function (user){
-    //user Vietspeak bot, KIWI -> do not handle
-    if (user == "U01EVJFP0U8" || user == "U01HEMMPVK2") return true;
-    
+
+exports.onlyHandleIfNotDeletingEvent = function (subtype) {
+  if (typeof subtype === "undefined") return false;
+  if (subtype === "message_deleted") return true;
+
 }
+
+exports.onlyHandleIfNotBot = function (user) {
+  //user Vietspeak bot, KIWI -> do not handle
+  if (user == "U01EVJFP0U8" || user == "U01HEMMPVK2") return true;
+
+}
+
+exports.onlyHandleIfIM = function (channel_type) {
+  if (typeof channel_type === "im") return;
+  if (channel_type !== "im") return true;
+
+}
+
 
 exports.getRandomInt = function (min, max) {
   min = Math.ceil(min);
