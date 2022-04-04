@@ -24,16 +24,12 @@ exports.getBeginningAndEndingTask = function (currentTime) {
 
 };
 
-
 exports.getCurrentTask = function (currentTime) {
   let getCurrentTask = list_task.filter((e) => e > currentTime);
   getCurrentTask = getCurrentTask[0];
   let starting_task = 68;
-
   getCurrentTask = list_task.indexOf(getCurrentTask) + starting_task;
-
   let latestTask = list_task.length + starting_task;
-
   const myDate = (timeStampt) => {
     return new Date(timeStampt * 1000).toLocaleString("en-US", {
       timeZone: "Asia/Ho_Chi_Minh",
@@ -53,6 +49,18 @@ exports.getCurrentTask = function (currentTime) {
   return getCurrentTask;
 };
 
+exports.getTimeStampFromTaskNumber = function (task) {
+  if (task < 68) return;
+  let firstIndex = 68;
+  let itemIndex = Number(task) - (68 + 1);
+  let beginning = list_task[itemIndex]
+  let ending = list_task[itemIndex + 1];
+  return {
+    beginning,
+    ending,
+    totalDay: (ending - beginning) / 86400
+  }
+};
 
 exports.cleanTextToCompare = function (textInput) {
   let result = textInput.trim().toLowerCase();
@@ -171,7 +179,6 @@ exports.onlyHandleIfIM = function (channel_type) {
   if (channel_type !== "im") return true;
 
 }
-
 
 exports.getRandomInt = function (min, max) {
   min = Math.ceil(min);
