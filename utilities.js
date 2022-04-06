@@ -181,7 +181,6 @@ exports.onlyHandleIfIM = function (channel_type){
     
 }
 
-
 exports.onlyHandleIfNotDeletingEvent = function (subtype){
     if(typeof subtype === "undefined") return false;
     if (subtype === "message_deleted") return true;
@@ -200,7 +199,6 @@ exports.onlyHandleIfIM = function (channel_type){
     
 }
 
-
 exports.getRandomInt = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -210,3 +208,14 @@ exports.getRandomInt = function (min, max) {
 exports.randomIndex = function (max) {
   return Math.floor(Math.random() * max);
 };
+
+exports.onlyHandleIfUploadFile = function (files) {
+  if (typeof files === "undefined") return true;
+}
+
+exports.getTheLastDayOfTheMonth = function(){
+  const currentDate = new Date()    
+  let currentYear = currentDate.getFullYear()
+  let currentMonth = currentDate.getMonth() + 1;    
+  return new Date(currentYear, currentMonth, 0).getDate();
+}
